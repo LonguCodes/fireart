@@ -1,0 +1,61 @@
+name: Develop build
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  REPOSITORY: docker.longu.dev
+  BRANCH: main
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  api:
+    runs-on: self-hosted
+    steps:
+      - name: Prepare
+        id: prep
+        run: |
+          BRANCH=${GITHUB_REF##*/}
+          TS=$(date +%s)
+          REVISION=${GITHUB_SHA::8}
+          BUILD_ID="${BRANCH}-${REVISION}-${TS}"
+          echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_OUTPUT
+          echo BUILD_ID=${BUILD_ID} >> $GITHUB_OUTPUT
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v4
+        with:
+          main-branch-name: 'develop'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+      - uses: docker/login-action@v3
+        with:
+          registry: docker.longu.dev
+          username: ${{ vars.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - uses: docker/setup-qemu-action@v2
+      - uses: docker/setup-buildx-action@v2.1.0
+        with:
+          version: v0.9.1
+      - run: yarn
+      - run: yarn nx affected -t docker --exclude='!api'
+        env:
+          BUILD_ID: ${{ steps.prep.outputs.BUILD_ID }}
+          BRANCH: ${{ env.BRANCH }}
+          ENVIRONMENT: develop
+      - name: Send push notification
+        run: |
+          curl \
+            -u ${{ secrets.NTFY_CRED }} \
+            -H "Title: Develop api built" \
+            -H "Content-Type: text/plain" \
+            -d $'Repo: ${{ github.repository }}\nCommit: ${{ github.sha }}\nRef: ${{ github.ref }}\nStatus: ${{ job.status }}' \
+            ${{ secrets.NTFY_URL }}
