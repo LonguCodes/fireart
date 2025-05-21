@@ -17,8 +17,8 @@ FROM base AS prod
 RUN corepack enable
 ENV NODE_ENV=production
 WORKDIR /opt/api
-COPY --from=build /opt/api/dist/apps/api ./
+COPY --from=build /opt/api/apps/api/dist ./
 COPY --chown=node:node ./package.json ./
 COPY --chown=node:node ./package-lock.json ./
 RUN npm i --legacy-peer-deps
-CMD ["node", "main.mjs"]
+CMD ["node", "main.js"]
