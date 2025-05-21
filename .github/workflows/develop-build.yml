@@ -8,7 +8,7 @@ on:
 env:
   REPOSITORY: docker.longu.dev
   BRANCH: main
-
+  ENVIRONMENT: develop
 permissions:
   actions: read
   contents: read
@@ -23,7 +23,7 @@ jobs:
           BRANCH=${GITHUB_REF##*/}
           TS=$(date +%s)
           REVISION=${GITHUB_SHA::8}
-          BUILD_ID="${BRANCH}-${REVISION}-${TS}"
+          BUILD_ID="${ENVIRONMENT}-${REVISION}-${TS}"
           echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_OUTPUT
           echo BUILD_ID=${BUILD_ID} >> $GITHUB_OUTPUT
       - uses: actions/checkout@v4
@@ -50,7 +50,7 @@ jobs:
         env:
           BUILD_ID: ${{ steps.prep.outputs.BUILD_ID }}
           BRANCH: ${{ env.BRANCH }}
-          ENVIRONMENT: develop
+          ENVIRONMENT: ${{ env.ENVIRONMENT }}
       - name: Send push notification
         run: |
           curl \
