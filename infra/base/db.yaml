@@ -1,0 +1,19 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: database
+spec:
+  teamId: 'fireart'
+  volume:
+    size: 5Gi
+  numberOfInstances: 2
+  users:
+    fireart:
+
+  databases:
+    fireart: fireart
+  postgresql:
+    version: "16"
+  env:
+    - name: ALLOW_NOSSL
+      value: "true"

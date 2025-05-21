@@ -1,0 +1,29 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: api
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`api.fireart.longu.dev`)
+      kind: Rule
+      services:
+        - name: api
+          port: 3000
+  tls:
+    secretName: fireart.cert
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: fireart
+spec:
+  commonName: api.fireart.longu.dev
+  secretName: fireart.cert
+  dnsNames:
+    - api.fireart.longu.dev
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt
