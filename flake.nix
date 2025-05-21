@@ -14,6 +14,7 @@
       # create an environment with nodejs_18, pnpm, and yarn
       packages = with pkgs; [
         nodejs_24
+        zsh
       ];
 
       shellHook = ''
