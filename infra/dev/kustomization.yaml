@@ -5,4 +5,4 @@ resources:
   - ./secrets.yaml
 images:
   - name: docker.longu.dev/fireart/api
-    newTag: develop-9925501e-1747875478 # {"$imagepolicy": "flux-system:fireart:tag"}
+    newTag: develop-21ffaa2f-1747875920 # {"$imagepolicy": "flux-system:fireart:tag"}
