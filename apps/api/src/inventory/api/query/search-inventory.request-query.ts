@@ -1,6 +1,6 @@
 import { IsOptional, IsString, Length } from 'class-validator';
 
-export class SearchInventoryQuery {
+export class SearchInventoryRequestQuery {
   @IsString()
   @IsOptional()
   @Length(3)

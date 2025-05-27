@@ -10,12 +10,12 @@ import { AuthErrors } from '../../domain/errors';
 export class IdentityRepository {
   constructor(@Inject(CONNECTION) private readonly connection: Client) {}
 
-  public findByUsername(username: string) {
+  public findByEmail(email: string) {
     return ResultAsync.try(
       () =>
         this.connection.query<IdentityModel>(
-          `select * from identity where email = $1 limit 1`,
-          [username],
+          `select * from identity where email ilike $1 limit 1`,
+          [email],
         ),
       () => AuthErrors.Internal,
     ).map((results) => Maybe.tryFirst(results.rows));
@@ -25,7 +25,7 @@ export class IdentityRepository {
     return ResultAsync.try(
       () =>
         this.connection.query(
-          `select id from identity where email = $1 limit 1`,
+          `select id from identity where email ilike $1 limit 1`,
           [email],
         ),
       () => AuthErrors.Internal,

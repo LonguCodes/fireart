@@ -34,19 +34,18 @@ export class TokenService {
   public generatePasswordResetToken(
     passwordResetRequest: PasswordResetRequestModel,
   ) {
-    return Maybe.some(passwordResetRequest)
-      .map(() =>
-        jwt.sign(
-          {
-            iat: DateTime.now().toUnixInteger(),
-            sub: passwordResetRequest.id,
-            exp: DateTime.fromJSDate(
-              passwordResetRequest.expireAt,
-            ).toUnixInteger(),
-          },
-          this.config.signing.passwordReset,
-        ),
-      );
+    return Maybe.some(passwordResetRequest).map(() =>
+      jwt.sign(
+        {
+          iat: DateTime.now().toUnixInteger(),
+          sub: passwordResetRequest.id,
+          exp: DateTime.fromJSDate(
+            passwordResetRequest.expireAt,
+          ).toUnixInteger(),
+        },
+        this.config.signing.passwordReset,
+      ),
+    );
   }
 
   public validatePasswordResetToken(token: string): Maybe<JwtPayload> {

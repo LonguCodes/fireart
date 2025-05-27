@@ -6,8 +6,10 @@ import { AuthorizationMiddleware } from './api/middleware/authorization.middlewa
 import { IdentityRepository } from './infrastructure/repository/identity.repository';
 import { PasswordResetRequestRepository } from './infrastructure/repository/password-reset-request.repository';
 import { TokenService } from './domain/service/token.service';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
+  imports: [CqrsModule],
   controllers: [AuthController],
   providers: [
     {

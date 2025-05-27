@@ -3,6 +3,7 @@ import { Maybe, ResultAsync, Unit } from 'typescript-functional-extensions';
 import { Client } from 'pg';
 import { CONNECTION } from '../../../core/database/database.module';
 import { InventoryErrors } from '../../domain/errors';
+import { CoffeeBagModel } from '../../domain/model/coffee-bag.model';
 
 @Injectable()
 export class CoffeeBagRepository {
@@ -49,7 +50,7 @@ export class CoffeeBagRepository {
   public create(name: string, roastedOn: Date) {
     return ResultAsync.try(
       () =>
-        this.connection.query(
+        this.connection.query<CoffeeBagModel>(
           `insert into coffee_bag (name, roasted_on) values ($1, $2) returning id, name, roasted_on as "roastedOn"`,
           [name, roastedOn.toISOString()],
         ),

@@ -13,7 +13,7 @@ import { TokenService } from '../../domain/service/token.service';
 export class AuthorizationMiddleware implements NestMiddleware {
   constructor(@Inject() private readonly tokenService: TokenService) {}
 
-  use(req: AppRequest, res: any, next: (error?: Error | any) => void) {
+  use(req: AppRequest, res: unknown, next: (error?: Error | unknown) => void) {
     Maybe.from(req.headers.authorization).match({
       none: () => next(),
       some: (header) =>

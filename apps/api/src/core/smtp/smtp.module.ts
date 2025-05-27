@@ -26,16 +26,20 @@ export class SmtpModule {
           provide: MAILER,
           inject: [SMTP_CONFIG],
           useFactory: (config: SmtpModuleConfig) =>
-            nodemailer.createTransport({
-              host: config.host,
-              port: config.port,
-              from: config.sender,
-              secure: !config.insecure,
-              auth: {
-                user: config.username,
-                pass: config.password,
+            nodemailer.createTransport(
+              {
+                host: config.host,
+                port: config.port,
+                secure: !config.insecure,
+                auth: {
+                  user: config.username,
+                  pass: config.password,
+                },
               },
-            }),
+              {
+                from: config.sender,
+              },
+            ),
         },
       ],
       exports: [MAILER],

@@ -26,7 +26,7 @@ function getErrorByCode(code: number) {
   return InternalServerErrorException;
 }
 
-export function handleResult<T>(result: Result<T, any>) {
+export function handleResult<T>(result: Result<T, string>) {
   if (result.isFailure) {
     const [errorCode, ...errorMessageParts] = result
       .getErrorOrThrow()

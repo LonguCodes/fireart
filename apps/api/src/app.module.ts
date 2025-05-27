@@ -8,6 +8,7 @@ import { InventoryModule } from './inventory/inventory.module';
 import { ResultResponseInterceptorModule } from '@startupdevhouse/typescript-functional-extensions-nestjs';
 import { handleResult, mapData } from './core/common/results';
 import { SmtpModule } from './core/smtp/smtp.module';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { SmtpModule } from './core/smtp/smtp.module';
       inject: [ConfigToken],
       useFactory: (config: AppConfig) => config.smtp,
     }),
+    CqrsModule.forRoot(),
     AuthModule,
     InventoryModule,
   ],

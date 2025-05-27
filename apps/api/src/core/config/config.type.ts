@@ -18,5 +18,5 @@ export interface AppConfig {
     username?: string;
     password?: string;
     sender: string;
-  }
+  };
 }

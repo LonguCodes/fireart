@@ -6,8 +6,10 @@
   "private": true,
   "dependencies": {
     "@longucodes/config": "^1.1.17",
+    "@nestjs-architects/typed-cqrs": "^2.1.0",
     "@nestjs/common": "^10.0.2",
     "@nestjs/core": "^10.0.2",
+    "@nestjs/cqrs": "^10.0.2",
     "@nestjs/platform-express": "^10.0.2",
     "@nestjs/swagger": "8.1",
     "@nx/nest": "^21.1.0",

@@ -16,5 +16,5 @@ export const configSchema = Joi.object({
   SMTP__USERNAME: Joi.string().optional(),
   SMTP__PASSWORD: Joi.string().optional(),
   SMTP__INSECURE: Joi.boolean().default(false),
-  SMTP__FROM: Joi.string().default('contact@fireart.studio')
+  SMTP__SENDER: Joi.string().default('contact@fireart.studio'),
 });
