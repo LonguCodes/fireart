@@ -35,5 +35,13 @@ To run the api, use `nx serve api`
 
 - Use functional library - `typescript-functional-extensions` makes a lot of cases easier to write using its chaining functions, but it also makes it harder to join the project mid-way. 
 - No ORM - this was a task requirements, but it turns out writing everything yourself is much harder than expected. Reimplementing database operations from scratch took considerable amount of work and made me overshoot the estimated timeframe.
-- No rich domain layer - I chose `Transaction Script` as the method of implementation all the endpoints. This idea, combined with functional way of writing code really made the CRUD endpoints easy to read and maintain. Unfortunately the same is not true for the authentication endpoints, which turned out complicated and should be rewritten, probably using Domain Objects. This was not done due to time constraints.
 - Usage on monorepo solution for single application - Even if monorepo management library was not so useful right now, adding new application right now is just a simple command away. Nx is not a heavy burden to maintain even without benefits, so to theoretical potential was greater than minimal overhead.
+
+
+### Usage
+
+All information about the api can be found on the /api endpoint (Swagger)
+
+#### Authentication
+
+All endpoints expect `/auth/**` need authentication. To authenticate, provide `Authorization` header with `Bearer <YOUR TOKEN>` as a value
