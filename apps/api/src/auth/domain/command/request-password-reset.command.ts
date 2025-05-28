@@ -9,6 +9,8 @@ import { PasswordResetRequestRepository } from '../../infrastructure/repository/
 import { TokenService } from '../service/token.service';
 import { MAILER } from '../../../core/smtp/smtp.module';
 import type { Transporter } from 'nodemailer';
+import { ConfigToken } from '@longucodes/config';
+import { type AppConfig } from '../../../core/config/config.type';
 
 export class RequestPasswordResetCommand extends Command<Result<Unit>> {
   constructor(public readonly email: string) {
@@ -26,6 +28,8 @@ export class RequestPasswordResetCommandHandler
     private readonly passwordResetRepository: PasswordResetRequestRepository,
     @Inject()
     private readonly tokenService: TokenService,
+    @Inject(ConfigToken)
+    private readonly config: AppConfig,
     @Inject(MAILER)
     public readonly mailer: Transporter,
   ) {}
@@ -41,7 +45,9 @@ export class RequestPasswordResetCommandHandler
       .bind((identity) =>
         this.passwordResetRepository.create(
           identity.id,
-          DateTime.now().plus({ hour: 6 }),
+          DateTime.now().plus({
+            second: this.config.passwordReset.linkLifespan,
+          }),
         ),
       )
       .bind((request) =>

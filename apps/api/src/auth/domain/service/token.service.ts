@@ -18,15 +18,23 @@ export class TokenService {
           iat: DateTime.now().toUnixInteger(),
           sub: identityId,
         },
-        this.config.signing.authentication,
-        { expiresIn: '7Days', notBefore: 0, issuer: 'fireart.longu.dev' },
+        this.config.signing.authentication.secret,
+        {
+          expiresIn: this.config.signing.authentication.lifespan,
+          notBefore: 0,
+          issuer: this.config.signing.issuer,
+        },
       ),
     );
   }
 
   public validateAccessToken(token: string): Result<JwtPayload> {
     return Result.try(
-      () => jwt.verify(token, this.config.signing.authentication) as JwtPayload,
+      () =>
+        jwt.verify(
+          token,
+          this.config.signing.authentication.secret,
+        ) as JwtPayload,
       () => AuthErrors.InvalidToken,
     );
   }
@@ -43,7 +51,10 @@ export class TokenService {
             passwordResetRequest.expireAt,
           ).toUnixInteger(),
         },
-        this.config.signing.passwordReset,
+        this.config.signing.passwordReset.secret,
+        {
+          issuer: this.config.signing.issuer,
+        },
       ),
     );
   }
@@ -51,7 +62,7 @@ export class TokenService {
   public validatePasswordResetToken(token: string): Maybe<JwtPayload> {
     return Maybe.from(
       Result.try(
-        () => jwt.verify(token, this.config.signing.passwordReset),
+        () => jwt.verify(token, this.config.signing.passwordReset.secret),
         () => AuthErrors.InvalidToken,
       ).match({
         success: (payload) => payload as JwtPayload,

@@ -8,8 +8,14 @@ export interface AppConfig {
     insecure?: boolean;
   };
   signing: {
-    authentication: string;
-    passwordReset: string;
+    authentication: {
+      secret: string;
+      lifespan: number;
+    };
+    passwordReset: {
+      secret: string;
+    };
+    issuer: string;
   };
   smtp: {
     host: string;
@@ -18,5 +24,8 @@ export interface AppConfig {
     username?: string;
     password?: string;
     sender: string;
+  };
+  passwordReset: {
+    linkLifespan: number;
   };
 }
